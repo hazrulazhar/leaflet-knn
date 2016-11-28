@@ -33,22 +33,25 @@
         <script src='leaflet-knn.js'></script>
         <script src='points.js'></script>
         <script>
-var map = L.map('map').setView([37.8, -96], 4),
+var map = L.map('map').setView([37.8, -96], 2),
     gjLayer = L.geoJson(testCities);
 
 L.tileLayer('https://a.tiles.mapbox.com/v3/tmcw.map-l1m85h7s/{z}/{x}/{y}.png')
     .addTo(map);
 
-gjLayer.addTo(map);
+//gjLayer.addTo(map);
 
 document.getElementById('me').onclick = function() {
     navigator.geolocation.getCurrentPosition(function(pos) {
         var res = leafletKnn(gjLayer).nearest(
-            [pos.coords.longitude, pos.coords.latitude], 1);
+            [pos.coords.longitude, pos.coords.latitude], 5);
         if (res.length) {
             document.getElementById('me').innerHTML = 'Closest City to You is ' + res[0].layer.feature.properties.name;
             console.log(res[0].layer);
-            map.setView(res[0].layer.getLatLng(), 10);
+            map.setView(res[0].layer.getLatLng(), 6);
+            for(i=0; i<res.length; i++) {
+            	map.addLayer(res[i].layer);
+            }
         } else {
             document.getElementById('me').innerHTML = 'You aren\'t in America';
         }
