@@ -47,6 +47,8 @@ document.getElementById('me').onclick = function() {
             [pos.coords.longitude, pos.coords.latitude], 1);
         if (res.length) {
             document.getElementById('me').innerHTML = 'Closest City to You is ' + res[0].layer.feature.properties.name;
+            console.log(res[0].layer);
+            map.setView(res[0].layer.getLatLng(), 10);
         } else {
             document.getElementById('me').innerHTML = 'You aren\'t in America';
         }
